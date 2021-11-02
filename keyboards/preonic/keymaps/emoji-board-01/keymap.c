@@ -1,0 +1,860 @@
+/* Copyright 2015-2017 Jack Humbert
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#include QMK_KEYBOARD_H
+#include "muse.h"
+
+enum preonic_layers {
+  _QWERTY,
+  _LOWER,
+  _RAISE,
+  _ADJUST
+};
+
+enum preonic_keycodes {
+  QWERTY = SAFE_RANGE,
+  COLEMAK,
+  DVORAK,
+  LOWER,
+  RAISE,
+  BACKLIT,
+  COOLDOGE,
+  KEK,
+  SMEK,
+  KEKO,
+  SHIBCORN,
+  SUSDOG,
+  NYANCAT,
+  WOMANACCUSING,
+  CATACCUSED,
+  GOLIVE,
+  FACEPALM,
+  WACK,
+  OKBOOMERDOGE,
+  LAMPOON,
+  SMORT,
+  DICAPROLAUGH,
+  GOOSESHUT,
+  FEELSMEOWSIP,
+  WAITWHAT,
+  DATBOI,
+  PRAISEGAWD,
+  RAPBATTLE,
+  WHOA,
+  HOMERDISAPPEARS,
+  DIDNTASK,
+  YOUREBANNED,
+  NOONECARES,
+  WHOASKED,
+  CATSLAP,
+  PEEPORUN,
+  PEEPOBLANKET,
+  PEEPOMAYBE,
+  PEEPOEZ,
+  PEEPOSNACK,
+  MONKATHINK,
+  PEEPOLONEY,
+  PEEPOHANDS,
+  HYPERGASM,
+  AWKWARDMONKE,
+  WOW,
+  AOCHAIR,
+  TRIGGEREDAF,
+  WAH,
+  DOGWTF,
+  DRAKENO,
+  DRAKEYES,
+  THISISFINE,
+  HAROLD,
+  MEATRUB,
+  PERCENT,
+  EYEROLL,
+  EXPLODINGHEAD,
+  TADA,
+  TWOHEARTS,
+  THUMBSUP,
+  THUMBSDOWN,
+  DOWNLOAD,
+  BALLOTCHECK,
+  REACT
+};
+
+const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
+
+
+[_QWERTY] = LAYOUT_preonic_grid(
+  COOLDOGE,  SHIBCORN, 		GOLIVE,     	SMORT,  		DATBOI,   		DIDNTASK,     PEEPORUN,     MONKATHINK,   WOW,    		DRAKENO,    PERCENT,     	THUMBSUP,
+  KEK,       SUSDOG,        FACEPALM,   	DICAPROLAUGH, 	PRAISEGAWD,    	YOUREBANNED,  PEEPOBLANKET, PEEPOLONEY,   AOCHAIR,      DRAKEYES,   EYEROLL,   		THUMBSDOWN,
+  SMEK,      NYANCAT,       WACK,     		GOOSESHUT,  	RAPBATTLE,      NOONECARES,   PEEPOMAYBE,   PEEPOHANDS,   TRIGGEREDAF,  THISISFINE, EXPLODINGHEAD,  DOWNLOAD,
+  KEKO,      WOMANACCUSING, OKBOOMERDOGE,   FEELSMEOWSIP, 	WHOA,   		WHOASKED,  	  PEEPOEZ,  	HYPERGASM,    WAH,    		HAROLD, 	TADA,    		BALLOTCHECK,
+  REACT,     CATACCUSED,    LAMPOON,    	WAITWHAT, 		HOMERDISAPPEARS,CATSLAP,  	  PEEPOSNACK,   AWKWARDMONKE, DOGWTF,       MEATRUB,    TWOHEARTS,      KC_NO
+),
+
+[_LOWER] = LAYOUT_preonic_grid(
+  KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO, KC_NO, KC_NO, KC_NO,
+  KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO, KC_NO, KC_NO, KC_NO,
+  KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO, KC_NO, KC_NO, KC_NO,
+  KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO, KC_NO, KC_NO, KC_NO,
+  KC_NO, KC_NO, KC_NO, KC_NO, LOWER,   _______, _______, RAISE,   KC_NO, KC_NO, KC_NO, KC_NO
+),
+
+[_RAISE] = LAYOUT_preonic_grid(
+  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,
+  _______, RESET,   DEBUG,   CK_TOGG, _______, _______, _______, _______, _______,_______,  _______, KC_DEL,
+  _______, _______, MU_MOD,  AU_ON,   AU_OFF,  _______, _______, QWERTY,  _______, _______, _______, _______,
+  _______, MUV_DE,  MUV_IN,  MU_ON,   MU_OFF,  MI_ON,   MI_OFF,  _______, _______, _______, _______, _______,
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
+),
+
+/* Adjust (Lower + Raise)
+ * ,-----------------------------------------------------------------------------------.
+ * |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |  F7  |  F8  |  F9  |  F10 |  F11 |  F12 |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |      | Reset| Debug|Clk togg|      |      |      |      |      |      |     |  Del|
+ * |------+------+------+------+------+-------------+------+------+------+------+------|
+ * |      |      |Aud cy|Aud on|AudOff|AGnorm|AGswap|Qwerty|      |       |      |     |
+ * |------+------+------+------+------+------|------+------+------+------+------+------|
+ * |      |Voice-|Voice+|Mus on|MusOff|MidiOn|MidOff|Ck_togg|      |      |      |     |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |      |      |      |      |      |             |      |      |      |       |     |
+ * `-----------------------------------------------------------------------------------'
+ */
+[_ADJUST] = LAYOUT_preonic_grid(
+  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,
+  _______, RESET,   DEBUG,   CK_TOGG, _______, _______, _______, _______, _______,_______,  _______, KC_DEL,
+  _______, _______, MU_MOD,  AU_ON,   AU_OFF,  _______, _______, QWERTY,  _______, _______, _______, _______,
+  _______, MUV_DE,  MUV_IN,  MU_ON,   MU_OFF,  MI_ON,   MI_OFF,  _______, _______, _______, _______, _______,
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
+)
+
+
+};
+
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  switch (keycode) {
+	  static uint16_t key_timer;
+        case QWERTY:
+          if (record->event.pressed) {
+            set_single_persistent_default_layer(_QWERTY);
+          }
+          return false;
+          break;
+        case LOWER:
+          if (record->event.pressed) {
+            layer_on(_LOWER);
+            update_tri_layer(_LOWER, _RAISE, _ADJUST);
+          } else {
+            layer_off(_LOWER);
+            update_tri_layer(_LOWER, _RAISE, _ADJUST);
+          }
+          return false;
+          break;
+        case RAISE:
+          if (record->event.pressed) {
+            layer_on(_RAISE);
+            update_tri_layer(_LOWER, _RAISE, _ADJUST);
+          } else {
+            layer_off(_RAISE);
+            update_tri_layer(_LOWER, _RAISE, _ADJUST);
+          }
+          return false;
+          break;
+
+		case REACT:
+		  if (record->event.pressed) {
+           // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING("+");
+         } else if (timer_elapsed(key_timer) < 2000) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_BSPC);
+         }
+          break;
+		case COOLDOGE:
+		  if (record->event.pressed) {
+           // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":cooldoge:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case KEK:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+			SEND_STRING(":KEKW:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case SMEK:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":SMEK:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case KEKO:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":kekO:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case SHIBCORN:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":shibcorn:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case SUSDOG:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":susdog:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case NYANCAT:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":nyancat:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case WOMANACCUSING:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":WOMANACCUSING:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case CATACCUSED:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":CATACCUSED:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case GOLIVE:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":GOLIVE:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case FACEPALM:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":picardFacepalm:");
+        } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case WACK:
+		  if (record->event.pressed) {
+           // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":wack:");
+        } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case NOONECARES:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":NOONECARES:");
+        } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case OKBOOMERDOGE:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":okboomerdoge:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		  case LAMPOON:
+		  if (record->event.pressed) {
+           // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":Lampoon:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case SMORT:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":Smort:");
+        } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case DICAPROLAUGH:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":dicaproLaugh:");
+        } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case GOOSESHUT:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":GOOSESHUT:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case FEELSMEOWSIP:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":feelsmeowsip:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case DATBOI:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":DatBoi:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case PRAISEGAWD:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":praiseGawdDance:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case RAPBATTLE:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":RAPBATTLE:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case WHOA:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":Woah:");
+        } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case HOMERDISAPPEARS:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":HOMERDISAPPEARS:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		  break;
+		case WAITWHAT:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":waitWhat:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		  break;
+		case DIDNTASK:
+		  if (record->event.pressed) {
+           // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":didntAsk:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case YOUREBANNED:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":YoureBanned:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case CATSLAP:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":catSlap:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case PEEPORUN:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":peeporun:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case PEEPOBLANKET:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":peepoBlanket:");
+        } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case PEEPOMAYBE:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":peepoMaybe:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case PEEPOEZ:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":peepoEz:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case PEEPOSNACK:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":peepoSnack:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case PEEPOLONEY:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":peepoLonely:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case AWKWARDMONKE:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":awkwardMonke:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case MONKATHINK:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":thonkerS:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case PEEPOHANDS:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":pepeHands1:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case HYPERGASM:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":hypergasm:");
+        } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case WHOASKED:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":whoasked:");
+        } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case WOW:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":WOW:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case AOCHAIR:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":aochair:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case TRIGGEREDAF:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":triggeredaf:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case WAH:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":whapup:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case DOGWTF:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":dogwtf:");
+        } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case DRAKENO:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":DrakeNo:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case DRAKEYES:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":DrakeYes:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case THISISFINE:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":ThisIsFine:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case HAROLD:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":harold:");
+        } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case MEATRUB:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":MeatRub:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case PERCENT:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+            SEND_STRING(":100:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case EYEROLL:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+			// type out emoji code
+            SEND_STRING(":face_with_rolling_eyes:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case EXPLODINGHEAD:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+			// type out emoji code
+            SEND_STRING(":exploding_head:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case TADA:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+			// type out emoji code
+            SEND_STRING(":tada:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case TWOHEARTS:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+			// type out emoji code
+            SEND_STRING(":two_hearts:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case THUMBSUP:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+			// type out emoji code
+            SEND_STRING(":thumbsup:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case THUMBSDOWN:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+			// type out emoji code
+            SEND_STRING(":thumbsdown:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case DOWNLOAD:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+			// type out emoji code
+            SEND_STRING(":arrow_down:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+		case BALLOTCHECK:
+		  if (record->event.pressed) {
+            // when keycode is pressed start a timer
+			key_timer = timer_read();
+			// type out emoji code
+            SEND_STRING(":ballot_box_with_check:");
+         } else if (timer_elapsed(key_timer) > 100) {
+            // when keycode is released after being held for timer time append enter key
+			tap_code(KC_ENT);
+         }
+          break;
+        }
+    return true;
+};
+
+bool muse_mode = false;
+uint8_t last_muse_note = 0;
+uint16_t muse_counter = 0;
+uint8_t muse_offset = 70;
+uint16_t muse_tempo = 50;
+
+void encoder_update_user(uint8_t index, bool clockwise) {
+  if (muse_mode) {
+    if (IS_LAYER_ON(_RAISE)) {
+      if (clockwise) {
+        muse_offset++;
+      } else {
+        muse_offset--;
+      }
+    } else {
+      if (clockwise) {
+        muse_tempo+=1;
+      } else {
+        muse_tempo-=1;
+      }
+    }
+  } else {
+    if (clockwise) {
+      register_code(KC_PGDN);
+      unregister_code(KC_PGDN);
+    } else {
+      register_code(KC_PGUP);
+      unregister_code(KC_PGUP);
+    }
+  }
+}
+
+void dip_switch_update_user(uint8_t index, bool active) {
+    switch (index) {
+        case 0:
+            if (active) {
+                layer_on(_ADJUST);
+            } else {
+                layer_off(_ADJUST);
+            }
+            break;
+        case 1:
+            if (active) {
+                muse_mode = true;
+            } else {
+                muse_mode = false;
+            }
+    }
+}
+
+void matrix_scan_user(void) {
+#ifdef AUDIO_ENABLE
+    if (muse_mode) {
+        if (muse_counter == 0) {
+            uint8_t muse_note = muse_offset + SCALE[muse_clock_pulse()];
+            if (muse_note != last_muse_note) {
+                stop_note(compute_freq_for_midi_note(last_muse_note));
+                play_note(compute_freq_for_midi_note(muse_note), 0xF);
+                last_muse_note = muse_note;
+            }
+        }
+        muse_counter = (muse_counter + 1) % muse_tempo;
+    } else {
+        if (muse_counter) {
+            stop_all_notes();
+            muse_counter = 0;
+        }
+    }
+#endif
+}
+
+bool music_mask_user(uint16_t keycode) {
+  switch (keycode) {
+    case RAISE:
+    case LOWER:
+      return false;
+    default:
+      return true;
+  }
+}
